@@ -1,0 +1,41 @@
+ .login {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+
+    margin-left: 500px;
+}
+ .senha {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+
+    margin-left: 500px;
+}
+ .email {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+   
+    margin-left: 500px;
+}
+ .Numero_de_Telefone {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+
+    margin-left: 500px;
+}
+#login {
+    color: blue;
+}
+h3 {
+    margin-left: 500px;
+}
+.enviar {
+    margin-left: 700px;
+}
