@@ -1,10 +1,15 @@
+  .php {
+    width: 1538px;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
  .login {
     display: flex;
     align-items: center;
     width: auto;
     height: auto;
-
-    margin-left: 500px;
 }
  .senha {
     display: flex;
@@ -12,7 +17,6 @@
     width: auto;
     height: auto;
 
-    margin-left: 500px;
 }
  .email {
     display: flex;
@@ -20,7 +24,7 @@
     width: auto;
     height: auto;
    
-    margin-left: 500px;
+
 }
  .Numero_de_Telefone {
     display: flex;
@@ -28,14 +32,13 @@
     width: auto;
     height: auto;
 
-    margin-left: 500px;
+
 }
-#login {
-    color: blue;
-}
-h3 {
-    margin-left: 500px;
-}
-.enviar {
-    margin-left: 700px;
+.coisa {
+    background-color: gray;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
