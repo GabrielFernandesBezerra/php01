@@ -12,8 +12,9 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section id="php">
-        <form class="coisa">
+    <section class="php">
+        <div class="coisa">
+        <form class="form">
         <h3>CADASTRO</h3>
         <input type="text" placeholder="login" class="login">
         <br>
@@ -25,6 +26,7 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
         <br>
         <input  class="enviar" type="submit" onclick="logar(); return false;">
     </form>
+</div>
 </style>
 </body>
 </html>
