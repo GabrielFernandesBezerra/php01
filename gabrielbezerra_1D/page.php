@@ -9,7 +9,7 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projetinho PHP</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="page.css">
 </head>
 <body>
     <section class="php">
@@ -30,3 +30,4 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
 </style>
 </body>
 </html>
+
