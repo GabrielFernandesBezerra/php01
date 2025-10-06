@@ -8,7 +8,7 @@ if(isset($_POST['atualiza'])){
     $email      = mysqli_real_escape_string($conexao, $_POST['email']);
     $msg        = mysqli_real_escape_string($conexao, $_POST['msg']);
 
-    $sql = "UPDATE recados SET nome='$nome', email='$email', mensagem='$msg' WHERE id=$idatualiza";
+    $sql = "UPDATE usuario SET nome='$nome', email='$email', mensagem='$msg' WHERE id=$idatualiza";
     mysqli_query($conexao, $sql) or die("Erro ao atualizar: " . mysqli_error($conexao));
     header("Location: moderar.php");
     exit;
@@ -17,7 +17,7 @@ if(isset($_POST['atualiza'])){
 // Excluir recado
 if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
     $id = intval($_GET['id']);
-    mysqli_query($conexao, "DELETE FROM recados WHERE id=$id") or die("Erro ao deletar: " . mysqli_error($conexao));
+    mysqli_query($conexao, "DELETE FROM usuario WHERE id=$id") or die("Erro ao deletar: " . mysqli_error($conexao));
     header("Location: moderar.php");
     exit;
 }
@@ -26,7 +26,7 @@ if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
 $editar_id = isset($_GET['acao']) && $_GET['acao'] == 'editar' ? intval($_GET['id']) : 0;
 $recado_editar = null;
 if($editar_id){
-    $res = mysqli_query($conexao, "SELECT * FROM recados WHERE id=$editar_id");
+    $res = mysqli_query($conexao, "SELECT * FROM usuario WHERE id=$editar_id");
     $recado_editar = mysqli_fetch_assoc($res);
 }
 ?>
@@ -35,7 +35,7 @@ if($editar_id){
 <head>
 <meta charset="utf-8"/>
 <title>Moderar pedidos</title>
-<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="moderar.css"/>
 </head>
 <body>
 <div id="main">
@@ -45,7 +45,8 @@ if($editar_id){
 </div>
 
 <?php if($recado_editar): ?>
-<div id="formulario_mural">
+<section id="nao">
+<div id="sim">
 <form method="post">
     <label>Nome:</label>
     <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
@@ -60,7 +61,7 @@ if($editar_id){
 <?php endif; ?>
 
 <?php
-$seleciona = mysqli_query($conexao, "SELECT * FROM recados ORDER BY id DESC");
+$seleciona = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id DESC");
 if(mysqli_num_rows($seleciona) <= 0){
     echo "<p>Nenhum pedido no mural!</p>";
 }else{
