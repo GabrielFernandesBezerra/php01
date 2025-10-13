@@ -35,10 +35,13 @@
 
 }
 .coisa {
-    background-color: gray;
+    background-color: rgb(224, 255, 122);
     width: 400px;
     height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+body {
+    background-color: rgb(122, 122, 255);
 }

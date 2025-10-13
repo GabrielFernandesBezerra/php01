@@ -35,19 +35,18 @@ if($editar_id){
 <head>
 <meta charset="utf-8"/>
 <title>Moderar pedidos</title>
-<link rel="stylesheet" href="moderar.css"/>
+<link rel="stylesheet" href="page.css"/>
 </head>
 <body>
 <div id="main">
 <div id="geral">
-<div id="header">
-    <h1>Mural de pedidos</h1>
+<div class="header">
 </div>
 
 <?php if($recado_editar): ?>
-<section id="nao">
-<div id="sim">
+<div id="formulario_mural">
 <form method="post">
+    <h1>Mural de pedidos</h1>
     <label>Nome:</label>
     <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
     <label>Email:</label>

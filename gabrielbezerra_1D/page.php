@@ -26,8 +26,8 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
         <br>
         <input  class="enviar" type="submit" onclick="logar(); return false;">
     </form>
+</section>
 </div>
 </style>
 </body>
 </html>
-
