@@ -34,7 +34,7 @@ if($editar_id){
 <html lang="pt-br">
 <head>
 <meta charset="utf-8"/>
-<title>Moderar.php</title>
+<title>Moderar Pedidos</title>
 <link rel="stylesheet" href="page.css"/>
 </head>
 <body>

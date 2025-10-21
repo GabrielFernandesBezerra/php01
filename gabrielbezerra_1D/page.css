@@ -15,7 +15,7 @@ body {
 }
 
 .php {
-  min-width: 1700px;
+  min-width: 1500px;
   min-height: 100%;
   height: auto;
   width: auto;
@@ -28,12 +28,12 @@ body {
 
 
 .coisa {
-  min-width: 100%;
-  min-height: 900px;
+  min-width: 1520px;
+  min-height: 750px;
   height: auto;
   width: auto;
-  background-color: white;
-  border: 30px solid #903bff;
+  background-color: rgb(226, 255, 255);
+  border: 30px solid #3d89f4;
   border-radius: 40px; 
   position: relative;
   display: flex;

@@ -8,7 +8,7 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projetinho PHP</title>
+    <title>Cadastre-se</title>
     <link rel="stylesheet" href="pag.css">
 </head>
 <body>
