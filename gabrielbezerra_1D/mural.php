@@ -50,15 +50,12 @@ $(document).ready(function() {
 <form class="form" method="post">
     <h1>Mural de pedidos</h1>
     <label>Nome:</label>
-    <input type="text" name="nome"/><br/>
+    <input class="btn" type="text" name="nome"/><br/>
     <label>Email:</label>
-    <input type="text" name="email"/><br/>
+    <input class="btn" type="text" name="email"/><br/>
     <label>Mensagem:</label>
-    <textarea name="msg"></textarea><br/>
-    <input type="submit" value="Publicar no Mural" name="cadastra" class="btn"/>
-</form>
-</div>
-</section>
+    <textarea class="btn" name="msg" rows="4"></textarea><br/>
+    <input type="submit" value="Publicar no Mural" name="cadastra" class="enviar"/>
 
 <?php
 $seleciona = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id DESC");
@@ -73,7 +70,9 @@ while($res = mysqli_fetch_assoc($seleciona)){
 ?>
 
 <div id="footer">
-
+</form>
+</div>
+</section>
 </div>
 </div>
 </div>

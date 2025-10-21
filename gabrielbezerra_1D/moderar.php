@@ -34,29 +34,26 @@ if($editar_id){
 <html lang="pt-br">
 <head>
 <meta charset="utf-8"/>
-<title>Moderar pedidos</title>
+<title>Moderar.php</title>
 <link rel="stylesheet" href="page.css"/>
 </head>
 <body>
-<div id="main">
-<div id="geral">
-<div class="header">
-</div>
+<section class="php">
+<div class="coisa">
+<div class="form">
 
+ 
 <?php if($recado_editar): ?>
-<div id="formulario_mural">
-<form method="post">
     <h1>Mural de pedidos</h1>
+    form
     <label>Nome:</label>
-    <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
+    <input class="btn" type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
     <label>Email:</label>
-    <input type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/><br/>
+    <input class="btn" type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/><br/>
     <label>Mensagem:</label>
     <textarea name="msg"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea><br/>
     <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
-    <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
-</form>
-</div>
+    <input type="submit" name="atualiza" value="Modificar Recado" class="enviar"/>
 <?php endif; ?>
 
 <?php
@@ -77,7 +74,7 @@ if(mysqli_num_rows($seleciona) <= 0){
 }
 ?>
 
-<div id="footer">
+</form>
 </div>
 </div>
 </div>
