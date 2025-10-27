@@ -9,7 +9,7 @@ $result = mysqli_query($conexao, "SELECT * FROM usuario"); // exemplo de consult
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastre-se</title>
-    <link rel="stylesheet" href="pag.css">
+    <link rel="stylesheet" href="page.css">
 </head>
 <body>
     <section class="php">
