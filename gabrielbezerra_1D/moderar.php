@@ -1,82 +1,141 @@
 <?php
-include "conexao.php";
+include "conexao.php"; // conexão com MySQL + variáveis do Cloudinary
 
-// Atualizar recado
-if(isset($_POST['atualiza'])){
-    $idatualiza = intval($_POST['id']);
-    $nome       = mysqli_real_escape_string($conexao, $_POST['nome']);
-    $email      = mysqli_real_escape_string($conexao, $_POST['email']);
-    $msg        = mysqli_real_escape_string($conexao, $_POST['msg']);
+// Função para deletar imagem do Cloudinary
+function deletarImagemCloudinary($public_id, $cloud_name, $api_key, $api_secret) {
+    $timestamp = time();
+    $string_to_sign = "public_id=$public_id&timestamp=$timestamp$api_secret";
+    $signature = sha1($string_to_sign);
 
-    $sql = "UPDATE usuario SET nome='$nome', email='$email', mensagem='$msg' WHERE id=$idatualiza";
-    mysqli_query($conexao, $sql) or die("Erro ao atualizar: " . mysqli_error($conexao));
+    $data = [
+        'public_id' => $public_id,
+        'timestamp' => $timestamp,
+        'api_key' => $api_key,
+        'signature' => $signature
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://api.cloudinary.com/v1_1/$cloud_name/image/destroy");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return json_decode($response, true);
+}
+
+// Excluir produto
+if(isset($_GET['excluir'])) {
+    $id = intval($_GET['excluir']);
+    $res = mysqli_query($conexao, "SELECT imagem_url FROM usuario WHERE id = $id");
+    $dados = mysqli_fetch_assoc($res);
+
+    if($dados && !empty($dados['imagem_url'])) {
+        $url = $dados['imagem_url'];
+        $parts = explode("/", $url);
+        $filename = end($parts);
+        $public_id = pathinfo($filename, PATHINFO_FILENAME);
+        deletarImagemCloudinary($public_id, $cloud_name, $api_key, $api_secret);
+    }
+
+    mysqli_query($conexao, "DELETE FROM usuario WHERE id = $id");
     header("Location: moderar.php");
     exit;
 }
 
-// Excluir recado
-if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
-    $id = intval($_GET['id']);
-    mysqli_query($conexao, "DELETE FROM usuario WHERE id=$id") or die("Erro ao deletar: " . mysqli_error($conexao));
+// Editar produto
+if(isset($_POST['editar'])) {
+    $id = intval($_POST['id']);
+    $nome = mysqli_real_escape_string($conexao, $_POST['nome']);
+    $descricao = mysqli_real_escape_string($conexao, $_POST['descricao']);
+    $preco = floatval($_POST['preco']);
+
+    $update_sql = "UPDATE usuario SET nome='$nome', descricao='$descricao', preco=$preco WHERE id=$id";
+    mysqli_query($conexao, $update_sql);
     header("Location: moderar.php");
     exit;
 }
 
-// Editar recado
-$editar_id = isset($_GET['acao']) && $_GET['acao'] == 'editar' ? intval($_GET['id']) : 0;
-$recado_editar = null;
-if($editar_id){
-    $res = mysqli_query($conexao, "SELECT * FROM usuario WHERE id=$editar_id");
-    $recado_editar = mysqli_fetch_assoc($res);
-}
+// Selecionar produtos
+$editar_id = isset($_GET['editar']) ? intval($_GET['editar']) : 0;
+$produtos = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id DESC");
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="utf-8"/>
-<title>Moderar Pedidos</title>
 <link rel="stylesheet" href="page.css"/>
+<title>Moderar Produtos</title>
 </head>
 <body>
-<section class="php">
+
+<div class="php">
 <div class="coisa">
-<div class="form">
 
- 
-<?php if($recado_editar): ?>
-    <h1>Mural de pedidos</h1>
-    form
-    <label>Nome:</label>
-    <input class="btn" type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
-    <label>Email:</label>
-    <input class="btn" type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/><br/>
-    <label>Mensagem:</label>
-    <textarea name="msg"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea><br/>
-    <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
-    <input type="submit" name="atualiza" value="Modificar Recado" class="enviar"/>
-<?php endif; ?>
+    <h1 style="color: #fff; margin-bottom: 20px;">Moderar Produtos</h1>
 
-<?php
-$seleciona = mysqli_query($conexao, "SELECT * FROM usuario ORDER BY id DESC");
-if(mysqli_num_rows($seleciona) <= 0){
-    echo "<p>Nenhum pedido no mural!</p>";
-}else{
-    while($res = mysqli_fetch_assoc($seleciona)){
-        echo '<ul class="recados">';
-        echo '<li><strong>ID:</strong> ' . $res['id'] . ' | 
-              <a href="moderar.php?acao=excluir&id=' . $res['id'] . '">Remover</a> | 
-              <a href="moderar.php?acao=editar&id=' . $res['id'] . '">Modificar</a></li>';
-        echo '<li><strong>Nome:</strong> ' . htmlspecialchars($res['nome']) . '</li>';
-        echo '<li><strong>Email:</strong> ' . htmlspecialchars($res['email']) . '</li>';
-        echo '<li><strong>Mensagem:</strong> ' . nl2br(htmlspecialchars($res['mensagem'])) . '</li>';
-        echo '</ul>';
-    }
-}
-?>
+    <?php while($res = mysqli_fetch_assoc($produtos)): ?>
+        <div class="form">
 
-</form>
+            <ul class="recados">
+                <li><strong>ID:</strong> <?= $res['id'] ?></li>
+                <li><strong>Nome:</strong> <?= htmlspecialchars($res['nome']) ?></li>
+                <li><strong>Preço:</strong> R$ <?= number_format($res['preco'], 2, ',', '.') ?></li>
+                <li><strong>Descrição:</strong> <?= nl2br(htmlspecialchars($res['descricao'])) ?></li>
+            </ul>
+
+            <div style="width: 100%; text-align: center; margin: 15px 0;">
+                <img src="<?= htmlspecialchars($res['imagem_url']) ?>" 
+                     alt="<?= htmlspecialchars($res['nome']) ?>" 
+                     style="max-width: 100%; border-radius: 15px;">
+            </div>
+
+            <?php if($editar_id == $res['id']): ?>
+
+                <!-- FORMULÁRIO DE EDIÇÃO -->
+                <form method="post" action="moderar.php">
+                    <input type="hidden" name="id" value="<?= $res['id'] ?>">
+
+                    <label>Nome:</label>
+                    <input class="btn" type="text" name="nome" 
+                           value="<?= htmlspecialchars($res['nome']) ?>" required>
+
+                    <label>Descrição:</label>
+                    <textarea name="descricao" required><?= htmlspecialchars($res['descricao']) ?></textarea>
+
+                    <label>Preço (R$):</label>
+                    <input class="btn" type="number" step="0.01" 
+                           name="preco" value="<?= $res['preco'] ?>" required>
+
+                    <button class="enviar" type="submit" name="editar">Salvar</button>
+                    <a href="moderar.php" class="enviar" 
+                       style="background:#777; text-align:center; display:block; margin-top:10px;">Cancelar</a>
+                </form>
+            
+            <?php else: ?>
+
+                <!-- Botões normais -->
+                <a class="enviar" 
+                   href="moderar.php?editar=<?= $res['id'] ?>" 
+                   style="text-align:center;">Editar</a>
+
+                <a class="enviar" 
+                   href="moderar.php?excluir=<?= $res['id'] ?>" 
+                   onclick="return confirm('Tem certeza que deseja excluir?')"
+                   style="background:#e11d48; text-align:center; margin-top:10px;">
+                   Excluir
+                </a>
+
+            <?php endif; ?>
+
+        </div>
+    <?php endwhile; ?>
+
 </div>
 </div>
-</div>
+
 </body>
 </html>
+
